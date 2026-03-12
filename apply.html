@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apply online to Nova Computer Academy – ICT Training Institute in Sri Lanka." />
+  <title>Apply Online | Nova Computer Academy</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- ========== FAVICON — paste inside <head> of all pages ========== -->
+
+<!-- Standard favicon -->
+<link rel="icon" type="image/x-icon"        href="images/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16"  href="images/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32"  href="images/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="48x48"  href="images/favicon-48x48.png" />
+
+<!-- Apple devices (iPhone / iPad) -->
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+
+<!-- Android / PWA -->
+<link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png" />
+
+<!-- Browser tab color (matches your navy blue) -->
+<meta name="theme-color" content="#1e2a6e" />
+
+<!-- ================================================================ -->
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+<img src="images/Nova_Logo.png" alt="Nova Computer Academy" style="height:48px; width:auto;" />
+        <div class="nav-logo-text">
+          <span>Nova Computer Academy</span>
+          <span>ICT Training Institute</span>
+        </div>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#courses">Courses</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="apply.html" class="nav-apply active">Apply Online</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ==================== PAGE HERO ==================== -->
+  <section class="page-hero">
+    <h1>📝 Apply Online</h1>
+    <p>Fill in the form below to apply for a course at Nova Computer Academy. We'll contact you shortly.</p>
+  </section>
+
+  <!-- ==================== APPLICATION FORM ==================== -->
+  <section class="form-section">
+    <div class="container">
+
+      <div class="form-card">
+
+        <div class="form-notice">
+          📋 Fields marked with <span style="color:#ef4444;">*</span> are required. 
+          Make sure all details are accurate — we'll use this to contact you.
+        </div>
+
+        <!-- Alert box (shown after submission) -->
+        <div id="applyAlert" class="alert" role="alert"></div>
+
+        <form id="applyForm" novalidate>
+          <!-- Hidden field for PHP to know this is the apply form -->
+          <input type="hidden" name="form_type" value="application" />
+
+          <!-- COURSE SELECTION -->
+          <div class="form-group">
+            <label for="course">Course Applying For <span class="required">*</span></label>
+            <select id="course" name="course" required>
+              <option value="">— Select a Course —</option>
+              <option value="ICTT – NVQ Level 3">ICTT – NVQ Level 3 (Main Programme)</option>
+              <option value="MS Office & Computer Basics">MS Office &amp; Computer Basics</option>
+              <option value="Hardware & Networking">Hardware &amp; Networking</option>
+            </select>
+            <span class="error-msg"></span>
+          </div>
+
+          <!-- PERSONAL DETAILS -->
+          <h3 style="font-size:1rem; color:var(--blue-dark); margin: 24px 0 16px; padding-bottom:8px; border-bottom:2px solid var(--gray-200);">
+            👤 Personal Details
+          </h3>
+
+          <div class="form-group">
+            <label for="fullname">Full Name with Initials <span class="required">*</span></label>
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="e.g. A.K. Kumara"
+              required
+              autocomplete="name"
+            />
+            <span class="error-msg"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dob">Date of Birth <span class="required">*</span></label>
+              <input type="date" id="dob" name="dob" required />
+              <span class="error-msg"></span>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender <span class="required">*</span></label>
+              <select id="gender" name="gender" required>
+                <option value="">— Select —</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+              <span class="error-msg"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nic">NIC Number <span class="required">*</span></label>
+            <input
+              type="text"
+              id="nic"
+              name="nic"
+              placeholder="Enter 12-digit NIC number"
+              maxlength="12"
+              inputmode="numeric"
+              required
+            />
+            <span class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Permanent Address <span class="required">*</span></label>
+            <textarea
+              id="address"
+              name="address"
+              placeholder="Enter your full address..."
+              rows="3"
+              required
+            ></textarea>
+            <span class="error-msg"></span>
+          </div>
+
+          <!-- CONTACT DETAILS -->
+          <h3 style="font-size:1rem; color:var(--blue-dark); margin: 24px 0 16px; padding-bottom:8px; border-bottom:2px solid var(--gray-200);">
+            📞 Contact Details
+          </h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mobile">Mobile Phone <span class="required">*</span></label>
+              <input
+                type="tel"
+                id="mobile"
+                name="mobile"
+                placeholder="07XXXXXXXX"
+                maxlength="10"
+                inputmode="numeric"
+                required
+              />
+              <span class="error-msg"></span>
+            </div>
+            <div class="form-group">
+              <label for="whatsapp">WhatsApp Number</label>
+              <input
+                type="tel"
+                id="whatsapp"
+                name="whatsapp"
+                placeholder="07XXXXXXXX (optional)"
+                maxlength="10"
+                inputmode="numeric"
+              />
+              <span class="error-msg"></span>
+            </div>
+          </div>
+
+          <!-- EXTRA -->
+          <div class="form-group">
+            <label for="notes">Additional Notes / Questions</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="Any questions or special requests? (optional)"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- SUBMIT -->
+          <div class="form-submit">
+            <button type="submit" class="btn btn-blue">
+              ✉️ Submit Application
+            </button>
+            <p style="font-size:0.8rem; color:var(--gray-500); margin-top:12px;">
+              By submitting, you agree that your details will be used to contact you about your application.
+            </p>
+          </div>
+
+        </form>
+      </div><!-- /.form-card -->
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <h3>Nova Computer Academy</h3>
+        <p>
+          A leading ICT training institute offering quality, government-recognized courses for students and working professionals.
+          Equipping the next generation with real technology skills.
+        </p>
+        <!-- EDIT: Add your actual social media links below -->
+        <div class="footer-social">
+          <a href="https://web.facebook.com/profile.php?id=100064031377372" title="Facebook">📘</a>
+          <a href="https://wa.me/94722288018" title="WhatsApp">💬</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#courses">Courses</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="apply.html">Apply Online</a></li>
+        </ul>
+      </div>
+
+      <!-- Courses -->
+      <div class="footer-col">
+        <h4>Our Courses</h4>
+        <ul>
+          <li><a href="index.html#courses">ICTT – NVQ Level 3</a></li>
+          <li><a href="index.html#courses">MS Office & Computer Basics</a></li>
+          <li><a href="index.html#courses">Hardware & Networking</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <!-- EDIT: Replace all contact details below with your real info -->
+        <div class="footer-contact-item">
+          <span>📍</span>
+          <span>2nd Floor, Ruwan Motors,<br>Kalawana, Sri Lanka <!-- EDIT ADDRESS --></span>
+        </div>
+        <div class="footer-contact-item">
+          <span>📞</span>
+          <a href="tel:+94722288018">+94 72 228 8018</a> <!-- EDIT PHONE -->
+        </div>
+        <div class="footer-contact-item">
+          <span>💬</span>
+          <a href="https://wa.me/94722288018" target="_blank">WhatsApp Us</a> <!-- EDIT WA NUMBER -->
+        </div>
+        <div class="footer-contact-item">
+          <span>✉️</span>
+          <a href="mailto:contact@novait.edu.lk">contact@novait.edu.lk</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Nova Computer Academy. All rights reserved. | Designed by GihanIT.</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/94722288018?text=Hello%2C%20I%20want%20to%20enquire%20about%20your%20courses." 
+     class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+  <button class="back-to-top" title="Back to top">▲</button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
