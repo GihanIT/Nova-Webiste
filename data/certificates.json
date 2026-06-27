@@ -1,0 +1,82 @@
+[
+  {
+    "cert_id":    "NCA-CCA-2024-00001",
+    "nic":        "200012345678",
+    "name":       "A.K. Kumara Perera",
+    "course_code":"CCA",
+    "course_name":"Certificate in Computer Applications (ICTT / NVQ Level 3)",
+    "issue_date": "2024-06-15",
+    "expiry_date": null,
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-MSO-2024-00002",
+    "nic":        "200198765432",
+    "name":       "S.M. Dilrukshi Fernando",
+    "course_code":"MSO",
+    "course_name":"Microsoft Office & Digital Productivity",
+    "issue_date": "2024-08-20",
+    "expiry_date": null,
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-HNW-2024-00003",
+    "nic":        "199876543210",
+    "name":       "R.P. Jayasinghe",
+    "course_code":"HNW",
+    "course_name":"Computer Hardware & Networking",
+    "issue_date": "2024-11-01",
+    "expiry_date": null,
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-CCA-2025-00004",
+    "nic":        "200356789012",
+    "name":       "N.T. Bandara Wickramasinghe",
+    "course_code":"CCA",
+    "course_name":"Certificate in Computer Applications (ICTT / NVQ Level 3)",
+    "issue_date": "2025-03-10",
+    "expiry_date": null,
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-CYB-2025-00005",
+    "nic":        "200412345678",
+    "name":       "T.G. Nisansala Senanayake",
+    "course_code":"CYB",
+    "course_name":"Cybersecurity Fundamentals",
+    "issue_date": "2025-07-22",
+    "expiry_date": "2027-07-22",
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-WEB-2025-00006",
+    "nic":        "199954321098",
+    "name":       "C.L. Madushanka Ranasinghe",
+    "course_code":"WEB",
+    "course_name":"Web Design Fundamentals",
+    "issue_date": "2025-09-05",
+    "expiry_date": null,
+    "status":     "revoked"
+  },
+  {
+    "cert_id":    "NCA-AIE-2026-00007",
+    "nic":        "200567890123",
+    "name":       "P.R. Tharushi Gunasekara",
+    "course_code":"AIE",
+    "course_name":"AI Essentials for Everyone",
+    "issue_date": "2026-01-18",
+    "expiry_date": null,
+    "status":     "valid"
+  },
+  {
+    "cert_id":    "NCA-CCA-2026-00017",
+    "nic":        "200689012345",
+    "name":       "M.D. Kasun Dissanayake",
+    "course_code":"CCA",
+    "course_name":"Certificate in Computer Applications (ICTT / NVQ Level 3)",
+    "issue_date": "2026-05-30",
+    "expiry_date": null,
+    "status":     "valid"
+  }
+]

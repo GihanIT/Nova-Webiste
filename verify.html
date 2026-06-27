@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Verify the authenticity of a Nova Computer Academy certificate online." />
+  <title>Certificate Verification | Nova Computer Academy</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon"        href="images/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16"  href="images/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32"  href="images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="48x48"  href="images/favicon-48x48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png" />
+  <meta name="theme-color" content="#1e2a6e" />
+
+  <style>
+    /* ── Verify-page specific styles ── */
+    .verify-section {
+      padding: 64px 0 80px;
+      background: var(--gray-50);
+      min-height: 60vh;
+    }
+
+    .verify-wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Search card */
+    .verify-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 24px rgba(26,86,219,.07);
+    }
+
+    .verify-card h2 {
+      font-size: 1.25rem;
+      color: var(--blue-dark);
+      margin-bottom: 6px;
+    }
+
+    .verify-card p.sub {
+      font-size: 0.88rem;
+      color: var(--gray-500);
+      margin-bottom: 28px;
+    }
+
+    .verify-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .verify-tab {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all .2s;
+      text-align: center;
+    }
+
+    .verify-tab.active {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: #eff4ff;
+    }
+
+    .verify-input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .verify-input-group input {
+      flex: 1;
+      padding: 13px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--gray-800);
+      transition: border-color .2s;
+      background: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .verify-input-group input:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+
+    .verify-input-group input::placeholder {
+      color: var(--gray-400);
+      letter-spacing: 0;
+    }
+
+    .btn-verify {
+      padding: 13px 22px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+
+    .btn-verify:hover   { background: var(--blue-dark); }
+    .btn-verify:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* Dual input panel */
+    .dual-panel { display: none; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+    .dual-panel.active { display: flex; }
+    .dual-panel input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--gray-800);
+      transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .dual-panel input:focus { outline: none; border-color: var(--blue); }
+    .dual-panel input::placeholder { color: var(--gray-400); }
+    .dual-panel .btn-verify { width: 100%; }
+
+    .verify-hint {
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      margin-top: 4px;
+    }
+
+    /* Result card */
+    .result-card {
+      margin-top: 24px;
+      border-radius: 14px;
+      border: 2px solid var(--gray-200);
+      overflow: hidden;
+      display: none;
+    }
+
+    .result-card.show { display: block; }
+
+    .result-header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .result-header.valid   { background: #ecfdf5; border-bottom: 2px solid #6ee7b7; }
+    .result-header.revoked { background: #fef2f2; border-bottom: 2px solid #fca5a5; }
+    .result-header.expired { background: #fff7ed; border-bottom: 2px solid #fdba74; }
+    .result-header.invalid { background: #fef2f2; border-bottom: 2px solid #fca5a5; }
+
+    .result-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .result-status-text h3 {
+      font-size: 1.05rem;
+      margin: 0 0 2px;
+    }
+
+    .result-status-text.valid   h3 { color: #065f46; }
+    .result-status-text.revoked h3 { color: #991b1b; }
+    .result-status-text.expired h3 { color: #92400e; }
+    .result-status-text.invalid h3 { color: #991b1b; }
+
+    .result-status-text p {
+      font-size: 0.82rem;
+      margin: 0;
+      color: var(--gray-500);
+    }
+
+    .result-body {
+      padding: 24px;
+      background: #fff;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .result-field { display: flex; flex-direction: column; gap: 3px; }
+    .result-field.full { grid-column: 1 / -1; }
+
+    .result-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--gray-400);
+    }
+
+    .result-value {
+      font-size: 0.95rem;
+      color: var(--gray-800);
+      font-weight: 600;
+    }
+
+    .cert-id-display {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      color: var(--blue-dark);
+      background: var(--gray-50);
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      letter-spacing: .04em;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .status-badge.valid   { background: #d1fae5; color: #065f46; }
+    .status-badge.revoked { background: #fee2e2; color: #991b1b; }
+    .status-badge.expired { background: #ffedd5; color: #92400e; }
+
+    /* QR auto-fill notice */
+    .qr-notice {
+      display: none;
+      font-size: 0.8rem;
+      background: #eff4ff;
+      border: 1px solid #c7d7fd;
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: var(--blue-dark);
+      margin-bottom: 16px;
+    }
+    .qr-notice.show { display: block; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Info box below card */
+    .verify-info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .verify-info-box {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .verify-info-box .icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .verify-info-box h4 { font-size: 0.88rem; color: var(--blue-dark); margin-bottom: 4px; }
+    .verify-info-box p  { font-size: 0.78rem; color: var(--gray-500); margin: 0; line-height: 1.5; }
+
+    /* Course code legend */
+    .course-legend {
+      margin-top: 32px;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .course-legend-header {
+      padding: 14px 20px;
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .course-legend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .course-legend-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--gray-100);
+      border-right: 1px solid var(--gray-100);
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .course-legend-item:nth-child(even) { border-right: none; }
+
+    .course-code-tag {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #eff4ff;
+      color: var(--blue-dark);
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .course-legend-name {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 520px) {
+      .verify-card { padding: 24px 18px; }
+      .result-grid { grid-template-columns: 1fr; }
+      .result-field.full { grid-column: 1; }
+      .verify-info-row { grid-template-columns: 1fr; }
+      .course-legend-grid { grid-template-columns: 1fr; }
+      .course-legend-item { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/Nova_Logo.png" alt="Nova Computer Academy" style="height:48px; width:auto;" />
+        <div class="nav-logo-text">
+          <span>Nova Computer Academy</span>
+          <span>ICT Training Institute</span>
+        </div>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="verify.html">Verify Certificate</a></li>
+        <!--<li><a href="index.html#courses">Courses</a></li>-->
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="apply.html" class="nav-apply">Apply Online</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ==================== PAGE HERO ==================== -->
+  <section class="page-hero">
+    <h1>🎓 Certificate Verification</h1>
+    <p>Verify the authenticity of a Nova Computer Academy certificate instantly.</p>
+  </section>
+
+  <!-- ==================== VERIFY SECTION ==================== -->
+  <section class="verify-section">
+    <div class="verify-wrapper">
+
+      <!-- QR auto-fill notice -->
+      <div class="qr-notice" id="qrNotice">
+        📷 Certificate number filled from QR code — click <strong>Verify</strong> to check.
+      </div>
+
+      <!-- Search card -->
+      <div class="verify-card">
+        <h2>🔍 Verify a Certificate</h2>
+        <p class="sub">Search by certificate number, NIC number, or both for stronger verification.</p>
+
+        <!-- Mode tabs -->
+        <div class="verify-tabs">
+          <button class="verify-tab active" data-mode="id">By Certificate No.</button>
+          <button class="verify-tab"        data-mode="nic">By NIC Number</button>
+          <!--<button class="verify-tab"        data-mode="both">Both (Recommended)</button>-->
+        </div>
+
+        <!-- Single: Certificate ID -->
+        <div id="panel-id">
+          <div class="verify-input-group">
+            <input
+              type="text"
+              id="input-cert-id"
+              placeholder="Enter Certificate No."
+              maxlength="22"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button class="btn-verify" id="btn-id">Verify</button>
+          </div>
+          <p class="verify-hint">Format: NCA-XXX-YYYY-NNNNN (found on your certificate)</p>
+        </div>
+
+        <!-- Single: NIC -->
+        <div id="panel-nic" style="display:none;">
+          <div class="verify-input-group">
+            <input
+              type="text"
+              id="input-nic-single"
+              placeholder="Enter 12-digit NIC number"
+              maxlength="12"
+              inputmode="numeric"
+              autocomplete="off"
+            />
+            <button class="btn-verify" id="btn-nic">Verify</button>
+          </div>
+          <p class="verify-hint">Enter the NIC number of the certificate holder.</p>
+        </div>
+
+        <!-- Dual: Both -->
+        <div class="dual-panel" id="panel-both">
+          <input
+            type="text"
+            id="input-cert-both"
+            placeholder="Certificate No.  e.g. NCA-CCA-2026-00017"
+            maxlength="22"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <input
+            type="text"
+            id="input-nic-both"
+            placeholder="NIC Number  (12 digits)"
+            maxlength="12"
+            inputmode="numeric"
+            autocomplete="off"
+          />
+          <button class="btn-verify" id="btn-both">✔ Verify Both</button>
+          <p class="verify-hint">Both fields must match — strongest verification method.</p>
+        </div>
+
+        <!-- Result card -->
+        <div class="result-card" id="resultCard">
+
+          <!-- Valid -->
+          <div class="result-header valid" id="rh-valid" style="display:none;">
+            <div class="result-icon">✅</div>
+            <div class="result-status-text valid">
+              <h3>Certificate Verified</h3>
+              <p>This is an authentic Nova Computer Academy certificate.</p>
+            </div>
+          </div>
+
+          <!-- Revoked -->
+          <div class="result-header revoked" id="rh-revoked" style="display:none;">
+            <div class="result-icon">🚫</div>
+            <div class="result-status-text revoked">
+              <h3>Certificate Revoked</h3>
+              <p>This certificate has been revoked and is no longer valid.</p>
+            </div>
+          </div>
+
+          <!-- Expired -->
+          <div class="result-header expired" id="rh-expired" style="display:none;">
+            <div class="result-icon">⏰</div>
+            <div class="result-status-text expired">
+              <h3>Certificate Expired</h3>
+              <p>This certificate was valid but has passed its expiry date.</p>
+            </div>
+          </div>
+
+          <!-- Not found -->
+          <div class="result-header invalid" id="rh-invalid" style="display:none;">
+            <div class="result-icon">❌</div>
+            <div class="result-status-text invalid">
+              <h3>Certificate Not Found</h3>
+              <p id="rh-invalid-msg">No record matches the details provided.</p>
+            </div>
+          </div>
+
+          <!-- Details body (shown for valid/revoked/expired) -->
+          <div class="result-body" id="resultBody" style="display:none;">
+            <div class="result-grid">
+
+              <div class="result-field full">
+                <span class="result-label">Certificate Number</span>
+                <span class="result-value"><span class="cert-id-display" id="r-cert-id"></span></span>
+              </div>
+
+              <div class="result-field full">
+                <span class="result-label">Certificate Holder</span>
+                <span class="result-value" id="r-name" style="font-size:1.08rem;"></span>
+              </div>
+
+              <div class="result-field full">
+                <span class="result-label">Course / Programme</span>
+                <span class="result-value" id="r-course"></span>
+              </div>
+
+              <div class="result-field">
+                <span class="result-label">Issue Date</span>
+                <span class="result-value" id="r-issue"></span>
+              </div>
+
+              <div class="result-field" id="expiry-field">
+                <span class="result-label">Expiry Date</span>
+                <span class="result-value" id="r-expiry"></span>
+              </div>
+
+              <div class="result-field">
+                <span class="result-label">NIC (masked)</span>
+                <span class="result-value" id="r-nic" style="font-family:monospace;"></span>
+              </div>
+
+              <div class="result-field">
+                <span class="result-label">Status</span>
+                <span class="result-value" id="r-status"></span>
+              </div>
+
+            </div>
+
+            <div style="margin-top:18px; padding-top:16px; border-top:1px solid var(--gray-100); font-size:0.75rem; color:var(--gray-400); text-align:center;">
+              Issued by <strong>Nova Computer Academy</strong> · Kalawana, Sri Lanka · TVEC Reg. P07/0128
+            </div>
+          </div>
+
+        </div><!-- /#resultCard -->
+
+      </div><!-- /.verify-card -->
+
+      <!-- Info boxes -->
+      <div class="verify-info-row">
+        <div class="verify-info-box fade-in">
+          <div class="icon">📋</div>
+          <h4>Where to find the Certificate No.</h4>
+          <p>The certificate number (NCA-XXX-YYYY-NNNNN) is printed at the bottom of every issued certificate, or scan the QR code.</p>
+        </div>
+        <div class="verify-info-box fade-in">
+          <div class="icon">🔒</div>
+          <h4>Privacy & Security</h4>
+          <p>NIC numbers are never fully displayed. Results are verified in real-time against our secure records.</p>
+        </div>
+        <div class="verify-info-box fade-in">
+          <div class="icon">📞</div>
+          <h4>Can't verify?</h4>
+          <p>Contact us at <a href="mailto:contact@novait.edu.lk" style="color:var(--blue);">contact@novait.edu.lk</a> or call <a href="tel:+94722288018" style="color:var(--blue);">+94 72 228 8018</a>.</p>
+        </div>
+        <div class="verify-info-box fade-in">
+          <div class="icon">🏛️</div>
+          <h4>TVEC Recognized</h4>
+          <p>Nova Computer Academy is registered with the Tertiary & Vocational Education Commission (TVEC) of Sri Lanka.</p>
+        </div>
+      </div>
+
+      <!-- Course code legend -->
+      <!--<div class="course-legend fade-in">
+        <div class="course-legend-header">📘 Course Code Reference</div>
+        <div class="course-legend-grid">
+          <div class="course-legend-item"><span class="course-code-tag">CCA</span><span class="course-legend-name">Certificate in Computer Applications (ICTT / NVQ Level 3)</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">MSO</span><span class="course-legend-name">Microsoft Office & Digital Productivity</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">CIT</span><span class="course-legend-name">Certificate in Information Technology</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">HNW</span><span class="course-legend-name">Computer Hardware & Networking</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">NET</span><span class="course-legend-name">Networking Essentials</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">DPS</span><span class="course-legend-name">Digital Productivity Skills</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">DOC</span><span class="course-legend-name">Digital Office Computing</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">DWS</span><span class="course-legend-name">Digital Workplace Skills</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">WEB</span><span class="course-legend-name">Web Design Fundamentals</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">PRG</span><span class="course-legend-name">Programming Fundamentals</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">GDA</span><span class="course-legend-name">Graphic Design Applications</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">VID</span><span class="course-legend-name">Video Editing Essentials</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">CYB</span><span class="course-legend-name">Cybersecurity Fundamentals</span></div>
+          <div class="course-legend-item"><span class="course-code-tag">AIE</span><span class="course-legend-name">AI Essentials for Everyone</span></div>
+        </div>
+      </div>-->
+
+    </div><!-- /.verify-wrapper -->
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Nova Computer Academy</h3>
+        <p>A leading ICT training institute offering quality, government-recognized courses for students and working professionals.</p>
+        <div class="footer-social">
+          <a href="https://web.facebook.com/profile.php?id=100064031377372" title="Facebook">📘</a>
+          <a href="https://wa.me/94722288018" title="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#courses">Courses</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="apply.html">Apply Online</a></li>
+          <li><a href="verify.html">Verify Certificate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Courses</h4>
+        <ul>
+          <li><a href="index.html#courses">ICTT – NVQ Level 3</a></li>
+          <li><a href="index.html#courses">MS Office & Computer Basics</a></li>
+          <li><a href="index.html#courses">Hardware & Networking</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="footer-contact-item">
+          <span>📍</span>
+          <span>2nd Floor, Ruwan Motors,<br>Kalawana, Sri Lanka</span>
+        </div>
+        <div class="footer-contact-item">
+          <span>📞</span>
+          <a href="tel:+94722288018">+94 72 228 8018</a>
+        </div>
+        <div class="footer-contact-item">
+          <span>💬</span>
+          <a href="https://wa.me/94722288018" target="_blank">WhatsApp Us</a>
+        </div>
+        <div class="footer-contact-item">
+          <span>✉️</span>
+          <a href="mailto:contact@novait.edu.lk">contact@novait.edu.lk</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Nova Computer Academy. All rights reserved. | Designed by GihanIT.</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/94722288018?text=Hello%2C%20I%20want%20to%20enquire%20about%20your%20courses."
+     class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+  <button class="back-to-top" title="Back to top">▲</button>
+
+  <script src="js/main.js"></script>
+  <script>
+  /* ── Certificate Verification JS ── */
+  (function () {
+
+    // ── Tab switching ─────────────────────────────────
+    const tabs    = document.querySelectorAll('.verify-tab');
+    const panels  = { id: 'panel-id', nic: 'panel-nic', both: 'panel-both' };
+    let   mode    = 'id';
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        mode = this.dataset.mode;
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        Object.keys(panels).forEach(function (k) {
+          const el = document.getElementById(panels[k]);
+          el.style.display = 'none';
+          el.classList.remove('active');
+        });
+        const target = document.getElementById(panels[mode]);
+        if (mode === 'both') {
+          target.classList.add('active');
+        } else {
+          target.style.display = 'block';
+        }
+        hideResult();
+      });
+    });
+
+    // ── QR auto-fill from URL param ───────────────────
+    const params = new URLSearchParams(window.location.search);
+    const qrId   = params.get('id');
+    if (qrId) {
+      document.getElementById('input-cert-id').value   = qrId.toUpperCase();
+      document.getElementById('input-cert-both').value = qrId.toUpperCase();
+      document.getElementById('qrNotice').classList.add('show');
+      // Auto-run verification
+      setTimeout(function () { runVerify('id'); }, 400);
+    }
+
+    // ── Button handlers ───────────────────────────────
+    document.getElementById('btn-id').addEventListener('click',   function () { runVerify('id');   });
+    document.getElementById('btn-nic').addEventListener('click',  function () { runVerify('nic');  });
+    document.getElementById('btn-both').addEventListener('click', function () { runVerify('both'); });
+
+    // Enter key support
+    ['input-cert-id', 'input-nic-single', 'input-cert-both', 'input-nic-both'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') runVerify(mode);
+      });
+    });
+
+    // Auto-uppercase cert ID inputs
+    ['input-cert-id', 'input-cert-both'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', function () {
+        const pos = this.selectionStart;
+        this.value = this.value.toUpperCase();
+        this.setSelectionRange(pos, pos);
+      });
+    });
+
+    // ── Core verification ─────────────────────────────
+    function runVerify(m) {
+      hideResult();
+      let certId = '', nic = '';
+
+      if (m === 'id') {
+        certId = document.getElementById('input-cert-id').value.trim();
+        if (!certId) { shakeInput('input-cert-id'); return; }
+      } else if (m === 'nic') {
+        nic = document.getElementById('input-nic-single').value.trim();
+        if (!nic) { shakeInput('input-nic-single'); return; }
+      } else {
+        certId = document.getElementById('input-cert-both').value.trim();
+        nic    = document.getElementById('input-nic-both').value.trim();
+        if (!certId && !nic) { shakeInput('input-cert-both'); return; }
+      }
+
+      // Build URL
+      const params = new URLSearchParams();
+      if (certId) params.set('id',  certId);
+      if (nic)    params.set('nic', nic);
+
+      setLoading(m, true);
+
+      fetch('verify.php?' + params.toString(), { method: 'GET' })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          setLoading(m, false);
+          showResult(data);
+        })
+        .catch(function () {
+          setLoading(m, false);
+          showResult({ success: false, message: 'Network error. Please try again.' });
+        });
+    }
+
+    // ── Render result ─────────────────────────────────
+    function showResult(data) {
+      const card = document.getElementById('resultCard');
+      card.classList.add('show');
+
+      // Hide all headers
+      ['valid','revoked','expired','invalid'].forEach(function (s) {
+        document.getElementById('rh-' + s).style.display = 'none';
+      });
+      document.getElementById('resultBody').style.display = 'none';
+
+      if (!data.success) {
+        document.getElementById('rh-invalid').style.display = 'flex';
+        document.getElementById('rh-invalid-msg').textContent = data.message || 'Certificate not found.';
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+      }
+
+      // Show correct header
+      document.getElementById('rh-' + data.status).style.display = 'flex';
+
+      // Fill details
+      document.getElementById('r-cert-id').textContent = data.cert_id;
+      document.getElementById('r-name').textContent    = data.name;
+      document.getElementById('r-course').textContent  = data.course_code + ' — ' + data.course_name;
+      document.getElementById('r-issue').textContent   = data.issue_date;
+      document.getElementById('r-nic').textContent     = data.nic_masked;
+
+      const expiryField = document.getElementById('expiry-field');
+      if (data.expiry_date) {
+        document.getElementById('r-expiry').textContent = data.expiry_date;
+        expiryField.style.display = 'flex';
+      } else {
+        expiryField.style.display = 'none';
+      }
+
+      // Status badge
+      const badgeColors = { valid: '#d1fae5;color:#065f46', revoked: '#fee2e2;color:#991b1b', expired: '#ffedd5;color:#92400e' };
+      const badgeIcons  = { valid: '✅', revoked: '🚫', expired: '⏰' };
+      document.getElementById('r-status').innerHTML =
+        `<span class="status-badge ${data.status}">${badgeIcons[data.status] || ''} ${data.status_label}</span>`;
+
+      document.getElementById('resultBody').style.display = 'block';
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideResult() {
+      const card = document.getElementById('resultCard');
+      card.classList.remove('show');
+    }
+
+    // ── Loading state ─────────────────────────────────
+    function setLoading(m, loading) {
+      const btnMap = { id: 'btn-id', nic: 'btn-nic', both: 'btn-both' };
+      const btn = document.getElementById(btnMap[m]);
+      if (loading) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>Checking…';
+      } else {
+        btn.disabled = false;
+        btn.textContent = m === 'both' ? '✔ Verify Both' : 'Verify';
+      }
+    }
+
+    // ── Shake invalid input ───────────────────────────
+    function shakeInput(id) {
+      const el = document.getElementById(id);
+      el.style.borderColor = '#ef4444';
+      el.focus();
+      el.style.animation = 'none';
+      el.offsetHeight; // reflow
+      el.style.animation = 'shake .3s ease';
+      setTimeout(function () {
+        el.style.borderColor = '';
+        el.style.animation = '';
+      }, 800);
+    }
+
+  })();
+  </script>
+
+  <style>
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+  </style>
+
+</body>
+</html>
